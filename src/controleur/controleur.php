@@ -17,29 +17,52 @@ function afficherPageFormulaire()
 
 function inscrireAUnCours()
 {
-    // 1. Validation de la présence des données POST obligatoires
+    // ==========================================
+    // ÉTAPE 1 : Vérification de la présence des champs
+    // ==========================================
     if (empty($_POST['nom']) || empty($_POST['email']) || empty($_POST['cours'])) {
-        // Redirection sécurisée vers la page du formulaire en cas d'omission
         header('Location: index.php?action=afficherPageFormulaire');
         exit();
     }
 
-    // 2. Tableau associatif servant à valider et faire correspondre la clé reçue avec son titre officiel
+    // Récupération et nettoyage des espaces blancs inutiles
+    $nom = trim($_POST['nom']);
+    $email = trim($_POST['email']);
+    $coursCle = trim($_POST['cours']);
+
+    // Liste des cours autorisés pour la validation de correspondance
     $listeDesCours = [
         'web1'      => 'Développement Web 1 (PHP & MySQL)',
         'interface' => "Design d'interfaces (Bootstrap 5)",
         'prog1'     => 'Programmation 1 (JavaScript)'
     ];
 
-    // Sécurité supplémentaire : s'assure que la valeur POST transmise correspond bien à une clé existante
-    if (!array_key_exists($_POST['cours'], $listeDesCours)) {
+    // ==========================================
+    // ÉTAPE 2 & 3 : Vérification du format et des contraintes
+    // ==========================================
+
+    // 1. Validation du champ 'nom' : de 3 à 50 caractères
+    $longueurNom = mb_strlen($nom);
+    if ($longueurNom < 3 || $longueurNom > 50) {
         header('Location: index.php?action=afficherPageFormulaire');
         exit();
     }
 
-    // Extraction du libellé du cours pour affichage
-    $nomDuCoursSelectionne = $listeDesCours[$_POST['cours']];
+    // 2. Validation du champ 'email' : format valide et max 255 caractères
+    if (strlen($email) > 255 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        header('Location: index.php?action=afficherPageFormulaire');
+        exit();
+    }
 
-    // 3. Routage vers la vue de confirmation
+    // 3. Validation du champ 'cours' : doit obligatoirement être un choix proposé
+    if (!array_key_exists($coursCle, $listeDesCours)) {
+        header('Location: index.php?action=afficherPageFormulaire');
+        exit();
+    }
+
+    // Si toutes les validations passent, on prépare la variable pour la vue
+    $nomDuCoursSelectionne = $listeDesCours[$coursCle];
+
+    // Routage vers la vue de confirmation
     require 'vue/confirmation.php';
 }
