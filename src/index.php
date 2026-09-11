@@ -3,7 +3,6 @@
 // Ainsi, toutes les requêtes HTTP doivent passer par ce fichier.
 // Il analyse le paramètre "action" de l'URL et appelle la fonction appropriée dans le contrôleur.
 
-
 // Chargement des contrôleurs
 require_once 'controleur/controleur.php';
 
@@ -21,6 +20,14 @@ try {
             // Ex. d'URL : index.php?action=afficherPageAccueil
             // Appel de la fonction du contrôleur pour afficher la page d'accueil
             afficherPageAccueil();
+            break;
+        case 'afficherPageFormulaire':
+            // Ex. d'URL : index.php?action=afficherPageFormulaire
+            afficherPageFormulaire();
+            break;
+        case 'inscrireAUnCours':
+            // Ex. d'URL : index.php?action=inscrireAUnCours
+            inscrireAUnCours();
             break;
         default:
             // Si l'action demandée n'est pas reconnue, on lance une exception

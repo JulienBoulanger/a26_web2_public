@@ -6,8 +6,6 @@
         </button>
 
         <!-- Menu de navigation -->
-        <!-- Sur les petits écrans, les éléments du menu sont cachés par défaut et -->
-        <!-- doivent être affichés lorsque le bouton hamburger est cliqué -->
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav">
                 <!-- Bouton vers la page d'accueil -->
@@ -16,6 +14,14 @@
                         class="nav-link <?php NavClass("afficherPageAccueil"); NavClassDefault(); ?>"
                         href="index.php?action=afficherPageAccueil">
                         Accueil
+                    </a>
+                </li>
+                <!-- ÉTAPE 3 : Bouton vers la page formulaire -->
+                <li class="nav-item">
+                    <a
+                        class="nav-link <?php NavClass("afficherPageFormulaire"); ?>"
+                        href="index.php?action=afficherPageFormulaire">
+                        Formulaire
                     </a>
                 </li>
             </ul>
@@ -33,7 +39,6 @@ function NavClass(string $menu)
 }
 
 // Ajoute la classe active si aucune action n'est spécifiée dans l'URL.
-// Un seul élément du menu (généralement l'accueil) devrait appeler cette fonction.
 function NavClassDefault()
 {
     if (!isset($_GET['action'])) {
